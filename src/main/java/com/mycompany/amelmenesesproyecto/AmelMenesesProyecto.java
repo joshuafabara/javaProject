@@ -31,24 +31,112 @@ package com.mycompany.amelmenesesproyecto;
  */
 
 import java.util.Scanner;
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
 public class AmelMenesesProyecto {
 
     public static void main(String[] args) {
-        // Using Scanner for Getting Input from User
+        // Se usa Scanner para poder obtener el input del usuario
         Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
-        System.out.println("You entered string " + s);
- 
-        int a = in.nextInt();
-        System.out.println("You entered integer " + a);
- 
-        float b = in.nextFloat();
-        System.out.println("You entered float " + b);
-        
-        System.out.print("Hey");
-        
-        System.out.print("ho");
-        
+        System.out.println("****   Información de un equipo deportivo   ****");
         System.out.println();
+        System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
+        //String s = in.nextLine();
+        //System.out.println("You entered string " + s);
+        
+        // A prueba de usuarios, validar que sea un entero
+//        while (!in.hasNextInt())
+//        {
+//            System.out.println("Ingrese un número por favor");
+//            in.next();
+//        }
+        esInt(in);
+        int numIntegrantes = in.nextInt();
+        
+        // Saltar caracter de nueva línea luego del nextInt()
+        in.nextLine();
+   
+        //System.out.println("You entered integer " + a);
+ 
+        //float b = in.nextFloat();
+        System.out.println("El equipo consta de " + numIntegrantes + " integrantes");
+        System.out.println("----------------------------------");
+        String[][] informacionEquipo = new String[3][numIntegrantes];
+        String inputDate = "";
+        boolean fechaNoValida = true;
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+   
+ 
+        // LLenado de matriz de información del equipo
+        // Primera fila para nombres y apellidos
+        // segunda fila para fecha de nacimiento
+        // tercera fila para estatura
+        for (int fila = 0; fila < informacionEquipo.length; fila++)
+        {
+            for (int col = 0; col < informacionEquipo[fila].length; col++)
+            {
+                switch(fila) {
+                    case 0:
+                        System.out.println("Ingrese el nombre y apellido del integrante Nro " + (col + 1));
+                        informacionEquipo[fila][col] = in.nextLine();
+                      break;
+                    case 1:
+                        System.out.println("Ingrese la fecha de nacimiento de " + informacionEquipo[0][col] + " en formato dd/MM/yyyy");
+                        while (fechaNoValida) {
+                            try {
+                                inputDate = in.next();
+                                Date fechaCorrecta=formatter1.parse(inputDate);
+//                                System.out.println(inputDate+"\t"+fechaCorrecta);
+                                informacionEquipo[fila][col] = inputDate;
+                                fechaNoValida = false;
+                            }catch(Exception e) {
+                                System.out.println("Formato incorrecto en la fecha ingresada, por favor usar el formato dd/MM/yyyy");
+                            }
+                        }
+                        fechaNoValida = true;
+                      break;
+                    case 2:
+                        System.out.println("Ingrese la estatura en centímetros de " + informacionEquipo[0][col]);
+                        esFloat(in);
+                        informacionEquipo[fila][col] = in.next();
+                      break;
+                    default:
+                }
+                System.out.println();
+            }
+        }
+        System.out.println();
+
+        imprimirMatriz(informacionEquipo);
+    }
+    
+    public static void imprimirMatriz(String mat[][])
+    {
+        // Loop through all rows
+        for (int i = 0; i < mat.length; i++) {
+ 
+            // Loop through all elements of current row
+            for (int j = 0; j < mat[i].length; j++)
+                System.out.print(mat[i][j] + " ");
+            System.out.println();
+        }
+    }
+    
+    // Función para validar enteros
+    public static void esInt(Scanner in) {
+        while (!in.hasNextInt())
+        {
+            System.out.println("Ingrese un número por favor");
+            in.next();
+        }
+    }
+    
+    // Función para validar floats
+    public static void esFloat(Scanner in) {
+        while (!in.hasNextFloat())
+        {
+            System.out.println("Ingrese un número válido por favor");
+            in.next();
+        }
     }
 }
