@@ -106,6 +106,20 @@ public class AmelMenesesProyecto {
             }
         }
         System.out.println();
+        System.out.println("--------- Menú de opciones ---------");
+        System.out.println("Elija una opción del menú");
+        System.out.println();
+        System.out.println("1. Persona mayor de edad del equipo");
+        System.out.println("2. Persona menor de edad del equipo");
+        System.out.println("3. Persona más alta del equipo");
+        System.out.println("4. Persona más baja del equipo");
+        System.out.println("5. Promedio de edad del equipo");
+        System.out.println("6. Promedio de estatura del equipo");
+        System.out.println("7. Número de personas adultas del equipo");
+        System.out.println("8. Número de personas menores de edad del equipo");
+        System.out.println("9. Número de personas menores de edad del equipo");
+        System.out.println("10. Peso ideal para una persona del equipo");
+        System.out.println("11. Elegir al azar una persona para prueba antidoping");
 
         imprimirMatriz(informacionEquipo);
     }
