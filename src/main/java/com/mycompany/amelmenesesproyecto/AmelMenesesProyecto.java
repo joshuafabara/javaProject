@@ -118,9 +118,8 @@ public class AmelMenesesProyecto {
         System.out.println("6. Promedio de estatura del equipo");
         System.out.println("7. Número de personas adultas del equipo");
         System.out.println("8. Número de personas menores de edad del equipo");
-        System.out.println("9. Número de personas menores de edad del equipo");
-        System.out.println("10. Peso ideal para una persona del equipo");
-        System.out.println("11. Elegir al azar una persona para prueba antidoping");
+        System.out.println("9. Peso ideal para una persona del equipo");
+        System.out.println("10. Elegir al azar una persona para prueba antidoping");
 
         imprimirMatriz(informacionEquipo);
         long edad = calcularEdadEntera(informacionEquipo[1][1]);
@@ -129,8 +128,12 @@ public class AmelMenesesProyecto {
         System.out.println("La edad es: " + edadDecimal);
         int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
         System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor]);
-        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo);
+        int posicionDelMenor = posicionMenorDelGrupo(informacionEquipo);
+        System.out.println("La persona menor es: " + informacionEquipo[0][posicionDelMenor]);
+        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo, true);
         System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
+        int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
+        System.out.println("La persona menos alta es: " + informacionEquipo[0][posicionMenosAlto]);
     }
     
     public static void imprimirMatriz(String mat[][])
@@ -225,6 +228,29 @@ public class AmelMenesesProyecto {
         return posicionMayor;
     }
     
+    // Funcion para encontrar la posicion de la persona de menor edad del grupo
+    public static int posicionMenorDelGrupo(String[][] matrizDeInfo) {
+        int posicionMenor = -1, i = 0;
+        double edadMenor = 0, edad;
+        
+        while(i < matrizDeInfo[1].length) {
+            if (i == 0) {
+                posicionMenor = i;
+                edadMenor = calcularEdadDecimal(matrizDeInfo[1][i]);
+            } 
+            else {
+                edad = calcularEdadDecimal(matrizDeInfo[1][i]);
+                if (edad < edadMenor) {
+                    edadMenor = edad;
+                    posicionMenor = i;
+                }
+            }
+            i++;
+        }
+        
+        return posicionMenor;
+    }
+    
     // Funcion para encontrar la posicion de la persona de mayor estatura del grupo usando sobrecarga de funciones
     public static int posicionMayorDelGrupo(String[][] matrizDeInfo, boolean paraEstatura) {
         int posicionMayor = -1, i = 0;
@@ -246,5 +272,28 @@ public class AmelMenesesProyecto {
         }
         
         return posicionMayor;
+    }
+    
+    // Funcion para encontrar la posicion de la persona de menor estatura del grupo usando sobrecarga de funciones
+    public static int posicionMenorDelGrupo(String[][] matrizDeInfo, boolean paraEstatura) {
+        int posicionMenor = -1, i = 0;
+        double estaturaMenor = 0, estatura;
+        
+        while(i < matrizDeInfo[2].length) {
+            if (i == 0) {
+                posicionMenor = i;
+                estaturaMenor = Integer.parseInt(matrizDeInfo[2][i]);
+            } 
+            else {
+                estatura = Integer.parseInt(matrizDeInfo[2][i]);
+                if (estatura < estaturaMenor) {
+                    estaturaMenor = estatura;
+                    posicionMenor = i;
+                }
+            }
+            i++;
+        }
+        
+        return posicionMenor;
     }
 }
