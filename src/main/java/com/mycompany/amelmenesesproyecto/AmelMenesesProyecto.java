@@ -32,6 +32,7 @@ package com.mycompany.amelmenesesproyecto;
 
 import java.util.Scanner;
 import java.text.SimpleDateFormat;  
+import java.util.concurrent.TimeUnit;
 import java.util.Date;  
 public class AmelMenesesProyecto {
 
@@ -122,6 +123,14 @@ public class AmelMenesesProyecto {
         System.out.println("11. Elegir al azar una persona para prueba antidoping");
 
         imprimirMatriz(informacionEquipo);
+        long edad = calcularEdadEntera(informacionEquipo[1][1]);
+        System.out.println("La edad es: " + edad);
+        double edadDecimal = calcularEdadDecimal(informacionEquipo[1][1]);
+        System.out.println("La edad es: " + edadDecimal);
+        int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
+        System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor]);
+        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo);
+        System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
     }
     
     public static void imprimirMatriz(String mat[][])
@@ -152,5 +161,90 @@ public class AmelMenesesProyecto {
             System.out.println("Ingrese un número válido por favor");
             in.next();
         }
+    }
+    
+    // Funcion para calcular la edad de una persona a partir de una cadena con formato correcto de fecha
+    public static long calcularEdadEntera(String fechaNacimiento) {
+        Date fechaActual = new Date();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        long diferenciaDeTiempo = 0;
+        
+        try {
+            Date fecha = formatter1.parse(fechaNacimiento);
+            diferenciaDeTiempo = fechaActual.getTime() - fecha.getTime();
+            diferenciaDeTiempo = TimeUnit
+                      .MILLISECONDS
+                      .toDays(diferenciaDeTiempo)
+                  / 365l;
+        }catch(Exception e) {
+            // No puede haber error porque ya validamos al momento de que el usuario ingresa los datos, el try catch es obligatorio.
+        }
+        
+        return diferenciaDeTiempo;
+    }
+    
+    // Funcion para calcular la edad de una persona a partir de una cadena con formato correcto de fecha con decimales
+    public static double calcularEdadDecimal(String fechaNacimiento) {
+        Date fechaActual = new Date();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        long diferenciaDeTiempo = 0;
+        double anios = 0;
+        
+        try {
+            Date fecha = formatter1.parse(fechaNacimiento);
+            diferenciaDeTiempo = fechaActual.getTime() - fecha.getTime();
+            anios = TimeUnit.DAYS.convert(diferenciaDeTiempo, TimeUnit.MILLISECONDS);
+            anios = anios/365;
+        }catch(Exception e) {
+            // No puede haber error porque ya validamos al momento de que el usuario ingresa los datos, el try catch es obligatorio.
+        }
+        
+        return anios;
+    }
+    
+    // Funcion para encontrar la posicion de la persona de mayor edad del grupo
+    public static int posicionMayorDelGrupo(String[][] matrizDeInfo) {
+        int posicionMayor = -1, i = 0;
+        double edadMayor = 0, edad;
+        
+        while(i < matrizDeInfo[1].length) {
+            if (i == 0) {
+                posicionMayor = i;
+                edadMayor = calcularEdadDecimal(matrizDeInfo[1][i]);
+            } 
+            else {
+                edad = calcularEdadDecimal(matrizDeInfo[1][i]);
+                if (edad > edadMayor) {
+                    edadMayor = edad;
+                    posicionMayor = i;
+                }
+            }
+            i++;
+        }
+        
+        return posicionMayor;
+    }
+    
+    // Funcion para encontrar la posicion de la persona de mayor estatura del grupo usando sobrecarga de funciones
+    public static int posicionMayorDelGrupo(String[][] matrizDeInfo, boolean paraEstatura) {
+        int posicionMayor = -1, i = 0;
+        double estaturaMayor = 0, estatura;
+        
+        while(i < matrizDeInfo[2].length) {
+            if (i == 0) {
+                posicionMayor = i;
+                estaturaMayor = Integer.parseInt(matrizDeInfo[2][i]);
+            } 
+            else {
+                estatura = Integer.parseInt(matrizDeInfo[2][i]);
+                if (estatura > estaturaMayor) {
+                    estaturaMayor = estatura;
+                    posicionMayor = i;
+                }
+            }
+            i++;
+        }
+        
+        return posicionMayor;
     }
 }
