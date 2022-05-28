@@ -44,12 +44,6 @@ public class AmelMenesesProyecto {
         Scanner in = new Scanner(System.in);
         System.out.println("****   Información de un equipo deportivo   ****");
         System.out.println();
-//        String strDecimal = "160.20";
-//        double f = Double.parseDouble(strDecimal);
-//        System.out.println(f);
-//        double suma = 0;
-//        suma = f + 20;
-//        System.out.println("la suma es: " + suma);
         System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
         //String s = in.nextLine();
         //System.out.println("You entered string " + s);
@@ -107,7 +101,7 @@ public class AmelMenesesProyecto {
                         fechaNoValida = true;
                       break;
                     case 2:
-                        System.out.println("Ingrese la estatura en centímetros de " + informacionEquipo[0][col]);
+                        System.out.println("Ingrese la estatura en metros de " + informacionEquipo[0][col]);
                         esDouble(in);
                         informacionEquipo[fila][col] = in.next();
                       break;
@@ -130,6 +124,7 @@ public class AmelMenesesProyecto {
         System.out.println("8. Número de personas menores de edad del equipo");
         System.out.println("9. Peso ideal para una persona del equipo");
         System.out.println("10. Elegir al azar una persona para prueba antidoping");
+        System.out.println("11. Mostrar los nombres de los integrantes ordenados alfabéticamente");
 
         imprimirArr(informacionEquipo);
         long edad = calcularEdadEntera(informacionEquipo[1][1]);
@@ -148,6 +143,7 @@ public class AmelMenesesProyecto {
         System.out.println("El promedio de estatura del grupo es: " + promedio(informacionEquipo, true));
         System.out.println("El número de adultos es: " + adultos(informacionEquipo));
         System.out.println("El número de menores de edad es: " + menores(informacionEquipo));
+        System.out.println("El peso recomendado de Prueba 1.85 30 años es: " + pesoRecomendado(1.75, 32) + "kg");
         sorteoDopping(informacionEquipo);
         ordenarAlfabeticamenteNombres(nombres);
         imprimirArr(nombres);
@@ -286,10 +282,10 @@ public class AmelMenesesProyecto {
         while(i < matrizDeInfo[2].length) {
             if (i == 0) {
                 posicionMayor = i;
-                estaturaMayor = Integer.parseInt(matrizDeInfo[2][i]);
+                estaturaMayor = Double.parseDouble(matrizDeInfo[2][i]);
             } 
             else {
-                estatura = Integer.parseInt(matrizDeInfo[2][i]);
+                estatura = Double.parseDouble(matrizDeInfo[2][i]);
                 if (estatura > estaturaMayor) {
                     estaturaMayor = estatura;
                     posicionMayor = i;
@@ -309,10 +305,10 @@ public class AmelMenesesProyecto {
         while(i < matrizDeInfo[2].length) {
             if (i == 0) {
                 posicionMenor = i;
-                estaturaMenor = Integer.parseInt(matrizDeInfo[2][i]);
+                estaturaMenor = Double.parseDouble(matrizDeInfo[2][i]);
             } 
             else {
-                estatura = Integer.parseInt(matrizDeInfo[2][i]);
+                estatura = Double.parseDouble(matrizDeInfo[2][i]);
                 if (estatura < estaturaMenor) {
                     estaturaMenor = estatura;
                     posicionMenor = i;
@@ -343,7 +339,6 @@ public class AmelMenesesProyecto {
     public static double promedio(String[][] matrizDeInfo, boolean paraEstatura) {
         double promedio = 0;
         int i = 0;
-        
         while(i < matrizDeInfo[2].length) {
             promedio += Double.parseDouble(matrizDeInfo[2][i]);
             i++;
@@ -394,5 +389,13 @@ public class AmelMenesesProyecto {
     //Ordenar arreglo que viene como parámetro por referencia
     public static void ordenarAlfabeticamenteNombres(String[] nombresDesordenados) {
         Arrays.sort(nombresDesordenados);
+    }
+    
+    public static double pesoRecomendado (double estatura, int edad) {
+        double  pesoRecomendado;
+        
+        pesoRecomendado = (((estatura * 100) - 100) + edad / 10) * 0.9;
+        
+        return pesoRecomendado;
     }
 }
