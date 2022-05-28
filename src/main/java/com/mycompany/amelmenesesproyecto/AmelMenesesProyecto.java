@@ -36,41 +36,34 @@ import java.util.concurrent.TimeUnit;
 import java.util.Date;  
 import java.util.Random;
 import java.util.Arrays;
+import java.text.DecimalFormat;
 
 public class AmelMenesesProyecto {
+    // Formato para presentar solo 2 decimales en un double.
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public static void main(String[] args) {
         // Se usa Scanner para poder obtener el input del usuario
         Scanner in = new Scanner(System.in);
+        System.out.println(aModoTitulo(" amel  sabine  meneses iMbaquingo "));
         System.out.println("****   Información de un equipo deportivo   ****");
         System.out.println();
         System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
-        //String s = in.nextLine();
-        //System.out.println("You entered string " + s);
-        
-        // A prueba de usuarios, validar que sea un entero
-//        while (!in.hasNextInt())
-//        {
-//            System.out.println("Ingrese un número por favor");
-//            in.next();
-//        }
+
         esInt(in);
         int numIntegrantes = in.nextInt();
         
         // Saltar caracter de nueva línea luego del nextInt()
         in.nextLine();
-   
-        //System.out.println("You entered integer " + a);
  
-        //float b = in.nextFloat();
         System.out.println("El equipo consta de " + numIntegrantes + " integrantes");
         System.out.println("----------------------------------");
         String[][] informacionEquipo = new String[3][numIntegrantes];
         String inputDate = "";
+        String nombreApellidoInput, nombreApellidoTitulo;
+        String continuar = "";
         boolean fechaNoValida = true;
         SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-        String[] nombres = new String[numIntegrantes];
-        nombres = informacionEquipo[0];
  
         // LLenado de matriz de información del equipo
         // Primera fila para nombres y apellidos
@@ -83,7 +76,15 @@ public class AmelMenesesProyecto {
                 switch(fila) {
                     case 0:
                         System.out.println("Ingrese el nombre y apellido del integrante Nro " + (col + 1));
+                        
+                        //Almacenamos nombre y apellido ingresados en la matriz
                         informacionEquipo[fila][col] = in.nextLine();
+                        // Asignamos el nombre y apellido ingresados a la variable nombreApellidoInput para corregirlo
+                        nombreApellidoInput = informacionEquipo[fila][col];
+                        //Usamos replace para reemplazar el contenido original de nombreApellidoInput con el nombre y apellido a modo título.
+                        nombreApellidoTitulo = nombreApellidoInput.replace(nombreApellidoInput, aModoTitulo(nombreApellidoInput));
+                        // Ponemos en la matriz el nombre y apellido corregidos a modo título.
+                        informacionEquipo[fila][col] = nombreApellidoTitulo;
                       break;
                     case 1:
                         System.out.println("Ingrese la fecha de nacimiento de " + informacionEquipo[0][col] + " en formato dd/MM/yyyy");
@@ -91,7 +92,6 @@ public class AmelMenesesProyecto {
                             try {
                                 inputDate = in.next();
                                 Date fechaCorrecta=formatter1.parse(inputDate);
-//                                System.out.println(inputDate+"\t"+fechaCorrecta);
                                 informacionEquipo[fila][col] = inputDate;
                                 fechaNoValida = false;
                             }catch(Exception e) {
@@ -110,43 +110,40 @@ public class AmelMenesesProyecto {
                 System.out.println();
             }
         }
-        System.out.println();
-        System.out.println("--------- Menú de opciones ---------");
-        System.out.println("Elija una opción del menú");
-        System.out.println();
-        System.out.println("1. Persona mayor de edad del equipo");
-        System.out.println("2. Persona menor de edad del equipo");
-        System.out.println("3. Persona más alta del equipo");
-        System.out.println("4. Persona más baja del equipo");
-        System.out.println("5. Promedio de edad del equipo");
-        System.out.println("6. Promedio de estatura del equipo");
-        System.out.println("7. Número de personas adultas del equipo");
-        System.out.println("8. Número de personas menores de edad del equipo");
-        System.out.println("9. Peso ideal para una persona del equipo");
-        System.out.println("10. Elegir al azar una persona para prueba antidoping");
-        System.out.println("11. Mostrar los nombres de los integrantes ordenados alfabéticamente");
+        
+        do {
+            continuar = "";
+            generarMenuPrincipal(in, informacionEquipo);
+            
+            while(!"SI".equals(continuar) && !"NO".equals(continuar)) {
+                System.out.println("¿ Desea continuar ? (Responda SI/NO)");
+                continuar = (in.nextLine()).toUpperCase();
+            }
+            
+            if ("NO".equals(continuar))
+                salirDelPrograma();
+        } while("SI".equals(continuar));
 
-        imprimirArr(informacionEquipo);
-        long edad = calcularEdadEntera(informacionEquipo[1][1]);
-        System.out.println("La edad es: " + edad);
-        double edadDecimal = calcularEdadDecimal(informacionEquipo[1][1]);
-        System.out.println("La edad es: " + edadDecimal);
-        int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
-        System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor]);
-        int posicionDelMenor = posicionMenorDelGrupo(informacionEquipo);
-        System.out.println("La persona menor es: " + informacionEquipo[0][posicionDelMenor]);
-        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo, true);
-        System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
-        int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
-        System.out.println("La persona menos alta es: " + informacionEquipo[0][posicionMenosAlto]);
-        System.out.println("El promedio de edad del grupo es: " + promedio(informacionEquipo));
-        System.out.println("El promedio de estatura del grupo es: " + promedio(informacionEquipo, true));
-        System.out.println("El número de adultos es: " + adultos(informacionEquipo));
-        System.out.println("El número de menores de edad es: " + menores(informacionEquipo));
-        System.out.println("El peso recomendado de Prueba 1.85 30 años es: " + pesoRecomendado(1.75, 32) + "kg");
-        sorteoDopping(informacionEquipo);
-        ordenarAlfabeticamenteNombres(nombres);
-        imprimirArr(nombres);
+//        long edad = calcularEdadEntera(informacionEquipo[1][1]);
+//        System.out.println("La edad es: " + edad);
+//        double edadDecimal = calcularEdadDecimal(informacionEquipo[1][1]);
+//        System.out.println("La edad es: " + edadDecimal);
+//        int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
+//        System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor]);
+//        int posicionDelMenor = posicionMenorDelGrupo(informacionEquipo);
+//        System.out.println("La persona menor es: " + informacionEquipo[0][posicionDelMenor]);
+//        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo, true);
+//        System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
+//        int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
+//        System.out.println("La persona menos alta es: " + informacionEquipo[0][posicionMenosAlto]);
+//        System.out.println("El promedio de edad del grupo es: " + promedio(informacionEquipo));
+//        System.out.println("El promedio de estatura del grupo es: " + promedio(informacionEquipo, true));
+//        System.out.println("El número de adultos es: " + adultos(informacionEquipo));
+//        System.out.println("El número de menores de edad es: " + menores(informacionEquipo));
+//        System.out.println("El peso recomendado de Prueba 1.85 30 años es: " + pesoRecomendado(1.75, 32) + "kg");
+//        sorteoDopping(informacionEquipo);
+//        ordenarAlfabeticamenteNombres(nombres);
+//        imprimirArr(nombres);
     }
     
     public static void imprimirArr(String mat[][])
@@ -391,11 +388,157 @@ public class AmelMenesesProyecto {
         Arrays.sort(nombresDesordenados);
     }
     
-    public static double pesoRecomendado (double estatura, int edad) {
+    public static double pesoRecomendado(double estatura, int edad) {
         double  pesoRecomendado;
         
         pesoRecomendado = (((estatura * 100) - 100) + edad / 10) * 0.9;
         
         return pesoRecomendado;
+    }
+    
+    // Función que recibe una cadena y la transforma a modo título, esto es cada palabra tiene su primera letra en mayúscula y el resto en minúscula.
+    public static String aModoTitulo(String cadena) {
+        String aModoTitulo, caracterInicial, restoDePalabra, palabraAModoTitulo;
+        int i =0;
+        // Primero removemos espacios al inicio y al final de la cadena
+        aModoTitulo = cadena.trim();
+        
+        // Separa la cadena en un arreglo de palabras por espacios en blanco, ignora múltiples espacios seguidos.
+        String[] palabras = aModoTitulo.split("\\s+");
+
+        while(i < palabras.length) {
+            // Sacamos el caracter inicial de cada palabra en la variable caracterInicial
+            caracterInicial = palabras[i].substring(0, 1);
+            // Sacamos el resto de cada palabra en la variabla restoDePalabra, 
+            //no se envía el segundo parámetro para que llegue hasta el final de la cadena.
+            restoDePalabra = palabras[i].substring(1);
+            // Pasamos el caracterInicial a mayúscula.
+            caracterInicial = caracterInicial.toUpperCase();
+            // Pasamos el restoDePalabra a minúscula.
+            restoDePalabra = restoDePalabra.toLowerCase();
+            
+            // Unimos el caracterInicial al restoDePalabra
+            palabraAModoTitulo = caracterInicial + restoDePalabra;
+            
+            // Sobreesribimos esa palabra en el arreglo de palabras
+            palabras[i] = palabraAModoTitulo;
+            i++;
+        }
+        
+        // Volvemos a unir el arreglo de palabras en un solo String separado por espacios.
+        aModoTitulo = String.join(" ", palabras);
+        return aModoTitulo;
+    }
+    
+    public static void generarMenuPrincipal(Scanner in, String[][] informacionEquipo) {
+        boolean opcionValida = false;
+        int opcion = 0;
+        
+        do {
+            limpiarConsola();
+            imprimirArr(informacionEquipo);
+            System.out.println();
+            System.out.println("--------- Menú de opciones ---------");
+            System.out.println("Elija una opción del menú");
+            System.out.println();
+            System.out.println("1. Persona de mayor edad del equipo");
+            System.out.println("2. Persona menor de edad del equipo");
+            System.out.println("3. Persona más alta del equipo");
+            System.out.println("4. Persona más baja del equipo");
+            System.out.println("5. Promedio de edad del equipo");
+            System.out.println("6. Promedio de estatura del equipo");
+            System.out.println("7. Número de personas adultas del equipo");
+            System.out.println("8. Número de personas menores de edad del equipo");
+            System.out.println("9. Peso ideal para una persona del equipo");
+            System.out.println("10. Elegir al azar una persona para prueba antidoping");
+            System.out.println("11. Mostrar los nombres de los integrantes ordenados alfabéticamente");
+            System.out.println("12. Salir del programa.");
+            
+            // Verificamos si la opción es un número
+            if (in.hasNextInt()) {
+                opcion = in.nextInt();
+                
+                // Si la opción es un número verificamos que se encuentre entre las opciones disponibles
+                if (opcion > 0 && opcion <= 12) {
+                    opcionValida = true;
+                    
+                    switch(opcion) {
+                        case 1:
+                            int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
+                            System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor] + ".");
+                          break;
+                        case 2: 
+                            int posicionDelMenor = posicionMenorDelGrupo(informacionEquipo);
+                            System.out.println("La persona menor es: " + informacionEquipo[0][posicionDelMenor] + ".");
+                          break;
+                        case 3: 
+                            int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo, true);
+                            System.out.println("La persona más alta es: " + informacionEquipo[0][posicionMasAlto] + ".");
+                          break;
+                        case 4: 
+                            int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
+                            System.out.println("La persona más baja es: " + informacionEquipo[0][posicionMenosAlto] + ".");
+                          break;
+                        case 5: 
+                            System.out.println("El promedio de edad del equipo es: " + df.format(promedio(informacionEquipo)) + " años.");
+                          break;
+                        case 6: 
+                            System.out.println("El promedio de estatura del grupo es: " + df.format(promedio(informacionEquipo, true)) + " metros.");
+                          break;
+                        case 7: 
+                            System.out.println("El número de adultos es: " + adultos(informacionEquipo) + ".");
+                          break;
+                        case 8:  
+                            System.out.println("El número de menores de edad es: " + menores(informacionEquipo) + ".");
+                          break;
+                        case 9: 
+                            System.out.println("Peso ideal");
+                          break;
+                        case 10: 
+                            sorteoDopping(informacionEquipo);
+                          break;
+                        case 11:
+                            String[] nombres = new String[informacionEquipo[0].length];
+                            int i = 0;
+                            // Copiamos cada nombre y apellido en el arreglo que será ordenado para no alterar la matriz original.
+                            while(i < nombres.length) {
+                                nombres[i] = informacionEquipo[0][i];
+                                i++;
+                            }
+                            ordenarAlfabeticamenteNombres(nombres);
+                            System.out.println("Lista de integrantes en orden alfabético");
+                            imprimirArr(nombres);
+                          break;
+                        case 12: 
+                            salirDelPrograma();
+                          break;
+                        default:
+                          // code block
+                    }
+                } else {
+                    // La opcion no es correcta
+                    System.out.println("Opción incorrecta.");
+                }
+            } else {
+                // La opcion no es correcta, no es un número
+                System.out.println("Opción incorrecta.");
+            }
+            // Saltar caracter de nueva línea luego del nextInt()
+            in.nextLine();
+        }
+        while (opcionValida == false);
+    }
+    
+    public static void salirDelPrograma() {
+        System.out.println();
+        System.out.println();
+        System.out.println("************************************************************************");
+        System.out.println("Gracias por utilizar el programa de información de un equipo deportivo");
+        System.exit(0);
+    }
+    
+    public static void limpiarConsola() {
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 }
