@@ -34,6 +34,9 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;  
 import java.util.concurrent.TimeUnit;
 import java.util.Date;  
+import java.util.Random;
+import java.util.Arrays;
+
 public class AmelMenesesProyecto {
 
     public static void main(String[] args) {
@@ -41,6 +44,12 @@ public class AmelMenesesProyecto {
         Scanner in = new Scanner(System.in);
         System.out.println("****   Información de un equipo deportivo   ****");
         System.out.println();
+//        String strDecimal = "160.20";
+//        double f = Double.parseDouble(strDecimal);
+//        System.out.println(f);
+//        double suma = 0;
+//        suma = f + 20;
+//        System.out.println("la suma es: " + suma);
         System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
         //String s = in.nextLine();
         //System.out.println("You entered string " + s);
@@ -66,7 +75,8 @@ public class AmelMenesesProyecto {
         String inputDate = "";
         boolean fechaNoValida = true;
         SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-   
+        String[] nombres = new String[numIntegrantes];
+        nombres = informacionEquipo[0];
  
         // LLenado de matriz de información del equipo
         // Primera fila para nombres y apellidos
@@ -98,7 +108,7 @@ public class AmelMenesesProyecto {
                       break;
                     case 2:
                         System.out.println("Ingrese la estatura en centímetros de " + informacionEquipo[0][col]);
-                        esFloat(in);
+                        esDouble(in);
                         informacionEquipo[fila][col] = in.next();
                       break;
                     default:
@@ -121,7 +131,7 @@ public class AmelMenesesProyecto {
         System.out.println("9. Peso ideal para una persona del equipo");
         System.out.println("10. Elegir al azar una persona para prueba antidoping");
 
-        imprimirMatriz(informacionEquipo);
+        imprimirArr(informacionEquipo);
         long edad = calcularEdadEntera(informacionEquipo[1][1]);
         System.out.println("La edad es: " + edad);
         double edadDecimal = calcularEdadDecimal(informacionEquipo[1][1]);
@@ -134,19 +144,36 @@ public class AmelMenesesProyecto {
         System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
         int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
         System.out.println("La persona menos alta es: " + informacionEquipo[0][posicionMenosAlto]);
+        System.out.println("El promedio de edad del grupo es: " + promedio(informacionEquipo));
+        System.out.println("El promedio de estatura del grupo es: " + promedio(informacionEquipo, true));
+        System.out.println("El número de adultos es: " + adultos(informacionEquipo));
+        System.out.println("El número de menores de edad es: " + menores(informacionEquipo));
+        sorteoDopping(informacionEquipo);
+        ordenarAlfabeticamenteNombres(nombres);
+        imprimirArr(nombres);
     }
     
-    public static void imprimirMatriz(String mat[][])
+    public static void imprimirArr(String mat[][])
     {
-        // Loop through all rows
+        // Barrer filas
         for (int i = 0; i < mat.length; i++) {
  
-            // Loop through all elements of current row
+            // Barrar columnas de cada fila
             for (int j = 0; j < mat[i].length; j++)
                 System.out.print(mat[i][j] + " ");
             System.out.println();
         }
     }
+    
+    public static void imprimirArr(String arr[])
+    {
+        // Barrer cada elemento del arreglo
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        
+        System.out.println();
+    } 
     
     // Función para validar enteros
     public static void esInt(Scanner in) {
@@ -158,8 +185,8 @@ public class AmelMenesesProyecto {
     }
     
     // Función para validar floats
-    public static void esFloat(Scanner in) {
-        while (!in.hasNextFloat())
+    public static void esDouble(Scanner in) {
+        while (!in.hasNextDouble())
         {
             System.out.println("Ingrese un número válido por favor");
             in.next();
@@ -251,7 +278,7 @@ public class AmelMenesesProyecto {
         return posicionMenor;
     }
     
-    // Funcion para encontrar la posicion de la persona de mayor estatura del grupo usando sobrecarga de funciones
+    // Función para encontrar la posicion de la persona de mayor estatura del grupo usando sobrecarga de funciones
     public static int posicionMayorDelGrupo(String[][] matrizDeInfo, boolean paraEstatura) {
         int posicionMayor = -1, i = 0;
         double estaturaMayor = 0, estatura;
@@ -295,5 +322,77 @@ public class AmelMenesesProyecto {
         }
         
         return posicionMenor;
+    }
+    
+    //Función para sacar el promedio de Edad.
+    public static double promedio(String[][] matrizDeInfo) {
+        double promedio = 0;
+        int i = 0;
+        
+        while(i < matrizDeInfo[1].length) {
+            promedio += calcularEdadDecimal(matrizDeInfo[1][i]);
+            i++;
+        }
+        
+        promedio /= matrizDeInfo[1].length;
+        
+        return promedio;
+    }
+    
+    //Función para sacar el promedio de estatura usando sobrecarga de funciones.
+    public static double promedio(String[][] matrizDeInfo, boolean paraEstatura) {
+        double promedio = 0;
+        int i = 0;
+        
+        while(i < matrizDeInfo[2].length) {
+            promedio += Double.parseDouble(matrizDeInfo[2][i]);
+            i++;
+        }
+        
+        promedio /= matrizDeInfo[2].length;
+        
+        return promedio;
+    }
+    
+    //Función para calcular el total de adultos del grupo
+    public static int adultos(String[][] matrizDeInfo) {
+        int adultos = 0, i = 0;
+        
+        while(i < matrizDeInfo[1].length) {
+            if (calcularEdadEntera(matrizDeInfo[1][i]) >= 18)
+                adultos++;
+            i++;
+        }
+        
+        return adultos;
+    }
+    
+    //Función para calcular el total de menores de edad del grupo
+    public static int menores(String[][] matrizDeInfo) {
+        int menores = 0, i = 0;
+        
+        while(i < matrizDeInfo[1].length) {
+            if (calcularEdadEntera(matrizDeInfo[1][i]) < 18)
+                menores++;
+            i++;
+        }
+        
+        return menores;
+    }
+    
+    //Elige una persona al azar para el test antidopping
+    public static void sorteoDopping(String[][] matrizDeInfo) {
+        Random rand = new Random(); //instance of random class
+        int limiteSuperior = matrizDeInfo[0].length - 1;
+        
+        //Generar num random entre 0 y última posición
+        int intRandom = rand.nextInt(limiteSuperior);
+        
+        System.out.println("La persona elegida para el control antidopping es: " + matrizDeInfo[0][intRandom]);
+    }
+    
+    //Ordenar arreglo que viene como parámetro por referencia
+    public static void ordenarAlfabeticamenteNombres(String[] nombresDesordenados) {
+        Arrays.sort(nombresDesordenados);
     }
 }
