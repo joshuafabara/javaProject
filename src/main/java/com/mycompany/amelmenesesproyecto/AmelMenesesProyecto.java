@@ -11,22 +11,22 @@ package com.mycompany.amelmenesesproyecto;
  * 
  * Proyecto Final Amel Meneses
  * 
- * Programa de Información Equipo/Grupo deportivo
+ * Programa de Información Equipo deportivo
  * 
- * El siguiente programa permite al usuario ingresar los datos principales de un grupo/equipo deportivo tales como:
+ * El siguiente programa permite al usuario ingresar los datos principales de un equipo deportivo tales como:
  * Número de integrantes, nombre y apellido, fecha de nacimiento y estatura de cada integrante.
  * 
  * A partir de los datos ingresados el usuario puede por medio de un menú elegir entre las siguientes opciones: 
  * 
- * - Persona de mayor edad del grupo.
- * - Persona de menor edad del grupo.
- * - Persona de mayor estatura del grupo.
- * - Persona de menor estatura del grupo.
- * - Promedio de edad en años del grupo.
- * - Promedio de estatura del grupo.
- * - Número de personas adultas en el grupo.
- * - Número de personas menores de edad en el grupo.
- * - Peso ideal para la persona del grupo que elija el usuario usando un menú con todos los integrantes.
+ * - Persona de mayor edad del equipo.
+ * - Persona de menor edad del equip.
+ * - Persona de mayor estatura del equipo.
+ * - Persona de menor estatura del equipo.
+ * - Promedio de edad en años del equip.
+ * - Promedio de estatura del equipo.
+ * - Número de personas adultas en el equipo.
+ * - Número de personas menores de edad en el equipoo.
+ * - Peso ideal para la persona del equipo que elija el usuario usando un menú con todos los integrantes.
  * - Elegir integrante al azar para prueba antidoping.
  */
 
@@ -53,10 +53,9 @@ public class AmelMenesesProyecto {
         boolean fechaNoValida = true;
         SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
         
-        System.out.println(aModoTitulo(" amel  sabine  meneses iMbaquingo "));
-        System.out.println("****   Información de un equipo deportivo   ****");
+        System.out.println("****   Información del equipo deportivo   ****");
         System.out.println();
-        System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
+        System.out.println("Ingrese el número de integrantes del equipo deportivo");
         // Verificar si el valor ingresado es entero y asignar a variable.
         esInt(in);
         int numIntegrantes = in.nextInt();
@@ -134,7 +133,7 @@ public class AmelMenesesProyecto {
         } while("SI".equals(continuar));
     }
     
-    // Función que imprimirá la matriz de información como una tabla.
+    // Función que imprimirá la matriz de información como una tabla. (Utliza sobrecarga de funciones)
     public static void imprimirArr(String mat[][])
     {
         // Damos un tamaño fijo a las celdas de 25 caracteres.
@@ -154,7 +153,7 @@ public class AmelMenesesProyecto {
                 System.out.print("|  ");
                 System.out.print(mat[i][j]);
                 
-                // i inicia en la longitud de lo que ya fue escrito
+                // k inicia en la longitud de lo que ya fue escrito
                 // es decir, 3 caracteres (| y 2 espacios en blanco) y el elemento en la posición [i][j]
                 k = 3 + mat[i][j].length();
                 
@@ -178,6 +177,7 @@ public class AmelMenesesProyecto {
         System.out.println("***********************");
     }
     
+    // Función para imprimir arreglo unidimensional (utilizando sobrecarga de funciones)
     public static void imprimirArr(String arr[])
     {
         // Barrer cada elemento del arreglo
@@ -226,7 +226,7 @@ public class AmelMenesesProyecto {
         return diferenciaDeTiempo;
     }
     
-    // Funcion para calcular la edad de una persona a partir de una cadena con formato correcto de fecha con decimales
+    // Función para calcular la edad de una persona a partir de una cadena con formato correcto de fecha con decimales
     public static double calcularEdadDecimal(String fechaNacimiento) {
         Date fechaActual = new Date();
         SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -411,6 +411,8 @@ public class AmelMenesesProyecto {
     public static double pesoRecomendado(double estatura, long edad) {
         double  pesoRecomendado;
         
+        // Fórmula para el peso recomendado (obtenida de la última guía)
+        // Casting implícito ya que se usa edad que es long dentro del cálculo de pesoRecomendado que es double.
         pesoRecomendado = (((estatura * 100) - 100) + edad / 10) * 0.9;
         
         return pesoRecomendado;
@@ -419,18 +421,19 @@ public class AmelMenesesProyecto {
     // Función que recibe una cadena y la transforma a modo título, esto es cada palabra tiene su primera letra en mayúscula y el resto en minúscula.
     public static String aModoTitulo(String cadena) {
         String aModoTitulo, caracterInicial, restoDePalabra, palabraAModoTitulo;
-        int i =0;
+        int i = 0;
         // Primero removemos espacios al inicio y al final de la cadena
         aModoTitulo = cadena.trim();
         
         // Separa la cadena en un arreglo de palabras por espacios en blanco, ignora múltiples espacios seguidos.
         String[] palabras = aModoTitulo.split("\\s+");
 
+        // Barrer el arreglo de palabras una palabra a la vez.
         while(i < palabras.length) {
             // Sacamos el caracter inicial de cada palabra en la variable caracterInicial
             caracterInicial = palabras[i].substring(0, 1);
             // Sacamos el resto de cada palabra en la variabla restoDePalabra, 
-            //no se envía el segundo parámetro para que llegue hasta el final de la cadena.
+            // no se envía el segundo parámetro para que llegue hasta el final de la cadena.
             restoDePalabra = palabras[i].substring(1);
             // Pasamos el caracterInicial a mayúscula.
             caracterInicial = caracterInicial.toUpperCase();
@@ -462,7 +465,7 @@ public class AmelMenesesProyecto {
             System.out.println("Elija una opción del menú");
             System.out.println();
             System.out.println("1. Persona de mayor edad del equipo");
-            System.out.println("2. Persona menor de edad del equipo");
+            System.out.println("2. Persona de menor edad del equipo");
             System.out.println("3. Persona más alta del equipo");
             System.out.println("4. Persona más baja del equipo");
             System.out.println("5. Promedio de edad del equipo");
@@ -511,8 +514,7 @@ public class AmelMenesesProyecto {
                         case 8:  
                             System.out.println("El número de menores de edad es: " + menores(informacionEquipo) + ".");
                           break;
-                        case 9: 
-                            System.out.println("Peso ideal");
+                        case 9:
                             menuIntegrantesParaPesoRecomendado(in, informacionEquipo);
                           break;
                         case 10: 
@@ -603,6 +605,6 @@ public class AmelMenesesProyecto {
             in.nextLine();
             
         }
-         while (opcionValida == false);
+        while (opcionValida == false);
     }
 }
