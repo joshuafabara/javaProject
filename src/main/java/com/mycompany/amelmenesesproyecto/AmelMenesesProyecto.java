@@ -40,16 +40,24 @@ import java.text.DecimalFormat;
 
 public class AmelMenesesProyecto {
     // Formato para presentar solo 2 decimales en un double.
+    // Variable global de clase.
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public static void main(String[] args) {
         // Se usa Scanner para poder obtener el input del usuario
         Scanner in = new Scanner(System.in);
+        // Declaración de variables de la función Main.
+        String inputDate = "";
+        String nombreApellidoInput, nombreApellidoTitulo;
+        String continuar = "";
+        boolean fechaNoValida = true;
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        
         System.out.println(aModoTitulo(" amel  sabine  meneses iMbaquingo "));
         System.out.println("****   Información de un equipo deportivo   ****");
         System.out.println();
         System.out.println("Ingrese el número de integrantes del equipo/grupo deportivo");
-
+        // Verificar si el valor ingresado es entero y asignar a variable.
         esInt(in);
         int numIntegrantes = in.nextInt();
         
@@ -58,12 +66,10 @@ public class AmelMenesesProyecto {
  
         System.out.println("El equipo consta de " + numIntegrantes + " integrantes");
         System.out.println("----------------------------------");
+        
+        // Creación de la matriz de información.
         String[][] informacionEquipo = new String[3][numIntegrantes];
-        String inputDate = "";
-        String nombreApellidoInput, nombreApellidoTitulo;
-        String continuar = "";
-        boolean fechaNoValida = true;
-        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+
  
         // LLenado de matriz de información del equipo
         // Primera fila para nombres y apellidos
@@ -111,10 +117,13 @@ public class AmelMenesesProyecto {
             }
         }
         
+        // Desplegar el menú principal hasta que el usuario decida no continuar
         do {
             continuar = "";
             generarMenuPrincipal(in, informacionEquipo);
             
+            // Volver a preguntar si desea continuar ya que no ha elegido ninguna de las dos opciones disponibles.
+            // Se usa equals en lugar de == o != por sugerencia del IDE Netbeans.
             while(!"SI".equals(continuar) && !"NO".equals(continuar)) {
                 System.out.println("¿ Desea continuar ? (Responda SI/NO)");
                 continuar = (in.nextLine()).toUpperCase();
@@ -123,31 +132,12 @@ public class AmelMenesesProyecto {
             if ("NO".equals(continuar))
                 salirDelPrograma();
         } while("SI".equals(continuar));
-
-//        long edad = calcularEdadEntera(informacionEquipo[1][1]);
-//        System.out.println("La edad es: " + edad);
-//        double edadDecimal = calcularEdadDecimal(informacionEquipo[1][1]);
-//        System.out.println("La edad es: " + edadDecimal);
-//        int posicionDelMayor = posicionMayorDelGrupo(informacionEquipo);
-//        System.out.println("La persona mayor es: " + informacionEquipo[0][posicionDelMayor]);
-//        int posicionDelMenor = posicionMenorDelGrupo(informacionEquipo);
-//        System.out.println("La persona menor es: " + informacionEquipo[0][posicionDelMenor]);
-//        int posicionMasAlto = posicionMayorDelGrupo(informacionEquipo, true);
-//        System.out.println("La persona mas alta es: " + informacionEquipo[0][posicionMasAlto]);
-//        int posicionMenosAlto = posicionMenorDelGrupo(informacionEquipo, true);
-//        System.out.println("La persona menos alta es: " + informacionEquipo[0][posicionMenosAlto]);
-//        System.out.println("El promedio de edad del grupo es: " + promedio(informacionEquipo));
-//        System.out.println("El promedio de estatura del grupo es: " + promedio(informacionEquipo, true));
-//        System.out.println("El número de adultos es: " + adultos(informacionEquipo));
-//        System.out.println("El número de menores de edad es: " + menores(informacionEquipo));
-//        System.out.println("El peso recomendado de Prueba 1.85 30 años es: " + pesoRecomendado(1.75, 32) + "kg");
-//        sorteoDopping(informacionEquipo);
-//        ordenarAlfabeticamenteNombres(nombres);
-//        imprimirArr(nombres);
     }
     
+    // Función que imprimirá la matriz de información como una tabla.
     public static void imprimirArr(String mat[][])
     {
+        // Damos un tamaño fijo a las celdas de 25 caracteres.
         int tamanioDeCelda = 25, k = 0;
         System.out.println("***********************");
         System.out.println("Matriz de información");
@@ -192,7 +182,7 @@ public class AmelMenesesProyecto {
     {
         // Barrer cada elemento del arreglo
         for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
+            System.out.println(arr[i] + " ");
         }
         
         System.out.println();
