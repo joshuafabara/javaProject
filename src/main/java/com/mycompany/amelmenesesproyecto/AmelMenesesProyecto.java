@@ -96,6 +96,7 @@ public class AmelMenesesProyecto {
                         while (fechaNoValida) {
                             try {
                                 inputDate = in.next();
+                                // Casting explícito de String a Date
                                 Date fechaCorrecta=formatter1.parse(inputDate);
                                 informacionEquipo[fila][col] = inputDate;
                                 fechaNoValida = false;
@@ -213,6 +214,7 @@ public class AmelMenesesProyecto {
         long diferenciaDeTiempo = 0;
         
         try {
+            // Casting explícito de String a Date
             Date fecha = formatter1.parse(fechaNacimiento);
             diferenciaDeTiempo = fechaActual.getTime() - fecha.getTime();
             diferenciaDeTiempo = TimeUnit
@@ -234,6 +236,7 @@ public class AmelMenesesProyecto {
         double anios = 0;
         
         try {
+            // Casting explícito de String a Date
             Date fecha = formatter1.parse(fechaNacimiento);
             diferenciaDeTiempo = fechaActual.getTime() - fecha.getTime();
             anios = TimeUnit.DAYS.convert(diferenciaDeTiempo, TimeUnit.MILLISECONDS);
@@ -299,9 +302,11 @@ public class AmelMenesesProyecto {
         while(i < matrizDeInfo[2].length) {
             if (i == 0) {
                 posicionMayor = i;
+                // Casting explícito de String a double
                 estaturaMayor = Double.parseDouble(matrizDeInfo[2][i]);
             } 
             else {
+                // Casting explícito de String a double
                 estatura = Double.parseDouble(matrizDeInfo[2][i]);
                 if (estatura > estaturaMayor) {
                     estaturaMayor = estatura;
@@ -322,9 +327,11 @@ public class AmelMenesesProyecto {
         while(i < matrizDeInfo[2].length) {
             if (i == 0) {
                 posicionMenor = i;
+                // Casting explícito de String a double
                 estaturaMenor = Double.parseDouble(matrizDeInfo[2][i]);
             } 
             else {
+                // Casting explícito de String a double
                 estatura = Double.parseDouble(matrizDeInfo[2][i]);
                 if (estatura < estaturaMenor) {
                     estaturaMenor = estatura;
@@ -357,6 +364,7 @@ public class AmelMenesesProyecto {
         double promedio = 0;
         int i = 0;
         while(i < matrizDeInfo[2].length) {
+            // Casting explícito de String a double
             promedio += Double.parseDouble(matrizDeInfo[2][i]);
             i++;
         }
@@ -589,6 +597,7 @@ public class AmelMenesesProyecto {
                     double estatura;
                     long edad;
                     // Asignamos valores a la estatura y edad del integrante escogido.
+                    // Casting explícito de String a double
                     estatura = Double.parseDouble(informacionEquipo[2][opcion - 1]);
                     edad = calcularEdadEntera(informacionEquipo[1][opcion - 1]);
                     
