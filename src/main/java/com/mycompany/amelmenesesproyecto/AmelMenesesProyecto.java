@@ -148,14 +148,44 @@ public class AmelMenesesProyecto {
     
     public static void imprimirArr(String mat[][])
     {
+        int tamanioDeCelda = 25, k = 0;
+        System.out.println("***********************");
+        System.out.println("Matriz de información");
+
         // Barrer filas
         for (int i = 0; i < mat.length; i++) {
- 
-            // Barrar columnas de cada fila
-            for (int j = 0; j < mat[i].length; j++)
-                System.out.print(mat[i][j] + " ");
+            // Se imprime el borde superior de la fila.
+            for (int l = 0; l < 25*mat[i].length; l++) {
+                System.out.print("-");
+            }
+            System.out.println();
+            // Barrer columnas de cada fila
+            for (int j = 0; j < mat[i].length; j++) {
+                System.out.print("|  ");
+                System.out.print(mat[i][j]);
+                
+                // i inicia en la longitud de lo que ya fue escrito
+                // es decir, 3 caracteres (| y 2 espacios en blanco) y el elemento en la posición [i][j]
+                k = 3 + mat[i][j].length();
+                
+                // Se agregan espacios en blanco hasta el tamaño de la celda - 1.
+                while (k < tamanioDeCelda - 1) {
+                    System.out.print(" ");
+                    k++;
+                }
+                
+                // Se agrega el fin de celda.
+                System.out.print("|");
+            }
+            System.out.println();
+            // Se imprime el borde inferior de la fila.
+            for (int m = 0; m < 25*mat[i].length; m++) {
+                System.out.print("-");
+            }
             System.out.println();
         }
+
+        System.out.println("***********************");
     }
     
     public static void imprimirArr(String arr[])
@@ -388,7 +418,7 @@ public class AmelMenesesProyecto {
         Arrays.sort(nombresDesordenados);
     }
     
-    public static double pesoRecomendado(double estatura, int edad) {
+    public static double pesoRecomendado(double estatura, long edad) {
         double  pesoRecomendado;
         
         pesoRecomendado = (((estatura * 100) - 100) + edad / 10) * 0.9;
@@ -430,12 +460,12 @@ public class AmelMenesesProyecto {
         return aModoTitulo;
     }
     
+    // Función para generar el menú principal del programa.
     public static void generarMenuPrincipal(Scanner in, String[][] informacionEquipo) {
         boolean opcionValida = false;
         int opcion = 0;
         
         do {
-            limpiarConsola();
             imprimirArr(informacionEquipo);
             System.out.println();
             System.out.println("--------- Menú de opciones ---------");
@@ -493,6 +523,7 @@ public class AmelMenesesProyecto {
                           break;
                         case 9: 
                             System.out.println("Peso ideal");
+                            menuIntegrantesParaPesoRecomendado(in, informacionEquipo);
                           break;
                         case 10: 
                             sorteoDopping(informacionEquipo);
@@ -500,7 +531,8 @@ public class AmelMenesesProyecto {
                         case 11:
                             String[] nombres = new String[informacionEquipo[0].length];
                             int i = 0;
-                            // Copiamos cada nombre y apellido en el arreglo que será ordenado para no alterar la matriz original.
+                            // Copiamos cada nombre y apellido en el arreglo que será ordenado
+                            // para no alterar la matriz original.
                             while(i < nombres.length) {
                                 nombres[i] = informacionEquipo[0][i];
                                 i++;
@@ -537,8 +569,50 @@ public class AmelMenesesProyecto {
         System.exit(0);
     }
     
-    public static void limpiarConsola() {
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
+    // Función que se encarga de generar el menú de integrantes del equipo 
+    // y devolver el peso recomendado para el initegrante seleccionado.
+    public static void menuIntegrantesParaPesoRecomendado(Scanner in, String[][] informacionEquipo) {
+        boolean opcionValida = false;
+        int opcion = 0, i = 0;
+        
+        do {
+            i = 0;
+            System.out.println();
+            System.out.println("--------------------------");
+            System.out.println("Elija un integrante");
+            
+            // Crearemos el menú con el número de opción seguido del nombre y apellido del integrante.
+            while(i < informacionEquipo[0].length) {
+                System.out.println((i + 1) + ". " + informacionEquipo[0][i]);
+                i++;
+            }
+            
+            // Verificamos si la opción ingresada es un número entero.
+            if (in.hasNextInt()) {
+                opcion = in.nextInt();
+                
+                // Verificamos si la opción es mayor a 0 y menor a la cantidad de integrantes posibles.
+                if (opcion > 0 && opcion <= informacionEquipo[0].length) {
+                    opcionValida = true;
+                    double estatura;
+                    long edad;
+                    // Asignamos valores a la estatura y edad del integrante escogido.
+                    estatura = Double.parseDouble(informacionEquipo[2][opcion - 1]);
+                    edad = calcularEdadEntera(informacionEquipo[1][opcion - 1]);
+                    
+                    System.out.println("El peso recomendado para " + informacionEquipo[0][opcion - 1] + " es: " + pesoRecomendado(estatura, edad) + "kg.");
+                } else {
+                    // La opcion no es correcta
+                    System.out.println("Opción incorrecta.");
+                }
+            } else {
+                // La opcion no es correcta, no es un número
+                System.out.println("Opción incorrecta.");
+            }
+            // Saltar caracter de nueva línea luego del nextInt()
+            in.nextLine();
+            
+        }
+         while (opcionValida == false);
     }
 }
