@@ -80,7 +80,7 @@ public class AmelMenesesProyecto {
             {
                 switch(fila) {
                     case 0:
-                        System.out.println("Ingrese el nombre y apellido del integrante Nro " + (col + 1));
+                        System.out.println("Ingrese el nombre y apellido del integrante Nro. " + (col + 1));
                         
                         //Almacenamos nombre y apellido ingresados en la matriz
                         informacionEquipo[fila][col] = in.nextLine();
